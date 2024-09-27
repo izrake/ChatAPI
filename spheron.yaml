@@ -1,0 +1,45 @@
+version: "1.0"
+
+services:
+  gpu-test:
+    image: quay.io/jupyter/pytorch-notebook:cuda12-pytorch-2.4.1
+    expose:
+      - port: 8888
+        as: 8888
+        to:
+          - global: true
+    env:
+      - JUPYTER_TOKEN=testing123
+profiles:
+  name: jupy-testing
+  duration: 2h
+  tier:
+    - community
+  compute:
+    gpu-test:
+      resources:
+        cpu:
+          units: 16
+        memory:
+          size: 32Gi
+        storage:
+          - size: 500Gi
+        gpu:
+          units: 2
+          attributes:
+            vendor:
+              nvidia:
+                - model: rtx4090
+  placement:
+    westcoast:
+      attributes:
+        region: us-central
+      pricing:
+        gpu-test:
+          token: USDT
+          amount: 2
+deployment:
+  gpu-test:
+    westcoast:
+      profile: gpu-test
+      count: 1

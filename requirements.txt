@@ -1,0 +1,8 @@
+   fastapi
+   pydantic
+   transformers
+   torch
+   uvicorn
+   pytest
+   pydantic_settings
+   accelerate>=0.26.0
